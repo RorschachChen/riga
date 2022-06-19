@@ -21,7 +21,7 @@ import numpy as np
 from wmark_regularizer import WatermarkRegularizer
 from wmark_regularizer import show_encoded_wmark
 from utility_function import *
-from models.mlp import build_mlp, build_mlp_second
+from models.mlp import build_mlp
 from models.inceptionnet import build_inceptionv3
 from models.rnn import build_rnn
 
