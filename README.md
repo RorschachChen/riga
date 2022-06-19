@@ -10,6 +10,7 @@ numpy
 
 ## celebA dataset:
 Please download from this website, and unzip in CELEBA dir.
+
 https://www.kaggle.com/datasets/ashishjangra27/gender-recognition-200k-images-celeba/download
 
 ## Example Transcript
