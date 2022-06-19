@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import os
 import csv
 import pickle
-
+import random
+import cv2
+import keras.utils.np_utils as kutils
 import time
 
 
@@ -72,15 +74,61 @@ def load_cifar10():
 
 
 def load_celeba():
-    x_train1, y_train1, x_test1, y_test1 = pickle.load(open('CELEBA/celeba1.pickle', 'rb'))
-    x_train2, y_train2, x_test2, y_test2 = pickle.load(open('CELEBA/celeba2.pickle', 'rb'))
-    x_train3, y_train3, x_test3, y_test3 = pickle.load(open('CELEBA/celeba3.pickle', 'rb'))
-    x_train4, y_train4, x_test4, y_test4 = pickle.load(open('CELEBA/celeba4.pickle', 'rb'))
+    # x_train1, y_train1, x_test1, y_test1 = pickle.load(open('CELEBA/celeba1.pickle', 'rb'))
+    # x_train2, y_train2, x_test2, y_test2 = pickle.load(open('CELEBA/celeba2.pickle', 'rb'))
+    # x_train3, y_train3, x_test3, y_test3 = pickle.load(open('CELEBA/celeba3.pickle', 'rb'))
+    # x_train4, y_train4, x_test4, y_test4 = pickle.load(open('CELEBA/celeba4.pickle', 'rb'))
 
-    x_train = np.concatenate((x_train1, x_train2, x_train3, x_train4), axis=0)
-    y_train = np.concatenate((y_train1, y_train2, y_train3, y_train4), axis=0)
-    x_test = np.concatenate((x_test1, x_test2, x_test3, x_test4), axis=0)
-    y_test = np.concatenate((y_test1, y_test2, y_test3, y_test4), axis=0)
+    # x_train = np.concatenate((x_train1, x_train2, x_train3, x_train4), axis=0)
+    # y_train = np.concatenate((y_train1, y_train2, y_train3, y_train4), axis=0)
+    # x_test = np.concatenate((x_test1, x_test2, x_test3, x_test4), axis=0)
+    # y_test = np.concatenate((y_test1, y_test2, y_test3, y_test4), axis=0)
+	
+    train_data = []
+    dire = 'CELEBA/Dataset/Train'
+    cat = ['Female', 'Male']
+    for cate in cat:
+        fold = os.path.join(dire, cate)
+        label = cat.index(cate)
+        for img in os.listdir(fold):
+            img_path = os.path.join(fold, img)
+            img_arr = cv2.imread(img_path)
+            train_data.append([img_arr, label])
+
+    random.shuffle(train_data)
+    x_train = []
+    y_train = []
+
+    for features, label in train_data:
+        x_train.append(features)
+        y_train.append(label)
+    x_train = np.array(x_train)
+    y_train = np.array(y_train)
+
+    dire = 'CELEBA/Dataset/Test'
+    cat = ['Female', 'Male']
+    test_data = []
+    for cate in cat:
+        fold = os.path.join(dire, cate)
+        label = cat.index(cate)
+        for img in os.listdir(fold):
+            img_path = os.path.join(fold, img)
+            img_arr = cv2.imread(img_path)
+            test_data.append([img_arr, label])
+
+    random.shuffle(test_data)
+    x_test = []
+    y_test = []
+
+    for features, label in test_data:
+        x_test.append(features)
+        y_test.append(label)
+    x_test = np.array(x_test)
+    y_test = np.array(y_test)
+
+    num_classes = len(cat)
+    y_train = kutils.to_categorical(y_train, num_classes)
+    y_test = kutils.to_categorical(y_test, num_classes)
 
     return (x_train, y_train, x_test, y_test)
 
