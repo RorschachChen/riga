@@ -8,6 +8,10 @@ tensorflow==1.9.0
 Keras==2.0.8  
 numpy
 
+## celebA dataset:
+Please download from this website, and unzip in CELEBA dir.
+https://www.kaggle.com/datasets/ashishjangra27/gender-recognition-200k-images-celeba/download
+
 ## Example Transcript
 `python main.py dataset_name wm_type save_name`
 where `dataset_name` could be mnist, celebA, twitter
